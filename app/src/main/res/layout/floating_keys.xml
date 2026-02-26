@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:orientation="vertical" android:padding="8dp"
+    android:background="#CC1a1a2e">
+
+    <LinearLayout android:id="@+id/dragHandle"
+        android:layout_width="match_parent" android:layout_height="20dp"
+        android:gravity="center" android:background="#44ffffff"
+        android:layout_marginBottom="6dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="drag" android:textSize="10sp" android:textColor="#aaffffff"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:gravity="center_horizontal" android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="4dp">
+        <ImageButton android:id="@+id/btnUp"
+            android:layout_width="64dp" android:layout_height="64dp"
+            android:src="@android:drawable/arrow_up_float"
+            android:background="#882d3561" android:contentDescription="Up"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="4dp">
+        <ImageButton android:id="@+id/btnLeft"
+            android:layout_width="64dp" android:layout_height="64dp"
+            android:src="@android:drawable/arrow_up_float"
+            android:rotation="270"
+            android:background="#882d3561" android:contentDescription="Left"
+            android:layout_marginEnd="4dp"/>
+        <ImageButton android:id="@+id/btnDown"
+            android:layout_width="64dp" android:layout_height="64dp"
+            android:src="@android:drawable/arrow_up_float"
+            android:rotation="180"
+            android:background="#882d3561" android:contentDescription="Down"
+            android:layout_marginEnd="4dp"/>
+        <ImageButton android:id="@+id/btnRight"
+            android:layout_width="64dp" android:layout_height="64dp"
+            android:src="@android:drawable/arrow_up_float"
+            android:rotation="90"
+            android:background="#882d3561" android:contentDescription="Right"/>
+    </LinearLayout>
+
+    <Button android:id="@+id/btnSpace"
+        android:layout_width="196dp" android:layout_height="40dp"
+        android:text="SPACE" android:textColor="#ffffff"
+        android:backgroundTint="#882d3561"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>
