@@ -3,37 +3,95 @@ package com.floatingkeys;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import androidx.core.app.NotificationCompat;
 
-public class FloatingKeyService extends Service {
+public class FloatingService extends Service {
 
-    public static boolean isRunning = false;
-    private static final String CH = "fk";
-    private WindowManager wm;
-    private View root;
-    private WindowManager.LayoutParams lp;
-    private int ix, iy;
-    private float itx, ity;
+    private WindowManager windowManager;
+    private View floatingView;
+    private static final String CHANNEL_ID = "FloatingKeyChannel";
 
-    @Override public IBinder onBind(Intent i) { return null; }
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null; 
+    }
 
     @Override
     public void onCreate() {
+        super.onCreate();
+        
+        // 1. Create Notification Channel & Notification (REQUIRED for Android 14+)
+        createNotificationChannel();
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Floating Arrow Keys")
+                .setContentText("Keys are active")
+                .setSmallIcon(android.R.drawable.ic_dialog_info) // Make sure to use your own icon here later
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build();
+
+        // 2. Start Foreground Service IMMEDIATELY 
+        if (Build.VERSION.SDK_INT >= 34) {
+            startForeground(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+        } else {
+            startForeground(1, notification);
+        }
+
+        // 3. Set up the floating window using the SERVICE Context
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        
+        // UNCOMMENT THIS ONCE YOU HAVE YOUR XML LAYOUT READY:
+        // floatingView = LayoutInflater.from(this).inflate(R.layout.your_floating_layout, null);
+
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O 
+                        ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY 
+                        : WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+
+        params.gravity = Gravity.TOP | Gravity.START;
+        params.x = 0;
+        params.y = 100;
+
+        // UNCOMMENT THIS ONCE YOU HAVE YOUR XML LAYOUT READY:
+        // windowManager.addView(floatingView, params);
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Floating Keys Status",
+                    NotificationManager.IMPORTANCE_LOW
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(serviceChannel);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Clean up the view when the service is killed
+        if (floatingView != null && windowManager != null) {
+            windowManager.removeView(floatingView);
+        }
+    }
+}
         super.onCreate();
         isRunning = true;
 
