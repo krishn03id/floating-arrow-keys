@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#44000000"
+    android:padding="8dp">
+
+    <!-- Hide Button -->
+    <Button
+        android:id="@+id/btn_hide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="HIDE"
+        android:textSize="10sp"
+        android:minHeight="35dp"/>
+
+    <!-- D-PAD Arrows -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/btn_hide"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/key_up"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:text="↑"
+            android:textSize="24sp"/>
+
+        <Button
+            android:id="@+id/key_left"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/key_up"
+            android:layout_toStartOf="@id/key_down"
+            android:text="←"
+            android:textSize="24sp"/>
+
+        <Button
+            android:id="@+id/key_down"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/key_up"
+            android:layout_centerHorizontal="true"
+            android:text="↓"
+            android:textSize="24sp"/>
+
+        <Button
+            android:id="@+id/key_right"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/key_up"
+            android:layout_toEndOf="@id/key_down"
+            android:text="→"
+            android:textSize="24sp"/>
+    </RelativeLayout>
+
+    <!-- SPACE BAR -->
+    <Button
+        android:id="@+id/key_space"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="16dp"
+        android:text="SPACE" />
+
+</RelativeLayout>
