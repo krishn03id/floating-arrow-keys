@@ -1,12 +1,42 @@
 package com.floatingkeys;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.inputmethodservice.InputMethodService;
+import android.os.Build;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
 public class GameKeyboardService extends InputMethodService {
+
+    private BroadcastReceiver showKeyboardReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Forces the keyboard to slide up when the floating button is tapped!
+            requestShowSelf(0);
+        }
+    };
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        IntentFilter filter = new IntentFilter("com.floatingkeys.SHOW_KEYBOARD");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(showKeyboardReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(showKeyboardReceiver, filter);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(showKeyboardReceiver);
+    }
 
     @Override
     public View onCreateInputView() {
@@ -23,7 +53,6 @@ public class GameKeyboardService extends InputMethodService {
         return view;
     }
 
-    // Handles physical press and hold
     private void setupKey(View button, final int keycode) {
         button.setOnTouchListener((v, event) -> {
             InputConnection ic = getCurrentInputConnection();
@@ -31,11 +60,9 @@ public class GameKeyboardService extends InputMethodService {
 
             int action = event.getAction();
             if (action == MotionEvent.ACTION_DOWN) {
-                // Key pressed down physically
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, keycode));
                 v.setPressed(true);
             } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
-                // Key released physically
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, keycode));
                 v.setPressed(false);
             }

@@ -20,12 +20,20 @@
         android:id="@+id/btn_enable"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="1. Enable in Settings"
+        android:text="1. Enable Keyboard"
         android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btn_select"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="2. Select Keyboard" />
+        android:text="2. Select Keyboard" 
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btn_trigger"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="3. Show Floating Trigger"
+        android:backgroundTint="#FF4081"/>
 </LinearLayout>
